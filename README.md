@@ -83,13 +83,15 @@ wie ik ben en waarom ik dit gemaakt heb
 
 een voorspelling maken over wat de score van de dag zal zijn,
 en wat er eventueel gedaan kan worden om de dag beter te maken.
-op basis van de lengte, frequentie, categorie van alle activiteiten van een dag, en de dagscore
+op basis van de lengte, frequentie, categorie
+van alle activiteiten van een dag, en de dagscore
 
 ### Technisch: 
 
 Dataset -> eigen data, data van gebruiker aka information donation
 door data zoeken met een gelijkaardige dag op basis van 
-de lengte, frequentie, categorie van alle activiteiten van een dag en de dagscore
+de lengte, frequentie, categorie
+van alle activiteiten van een dag en de dagscore
 
 neuraal netwerk? -> classification
 eigen gewogen vergelijking algoritme
