@@ -1,4 +1,4 @@
-package com.sevbesau.moodminer.model.database;
+package com.sevbesau.moodminer.model.database.categories;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,10 +6,12 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.sevbesau.moodminer.model.database.DAO;
+
 import java.util.List;
 
 @Dao
-public interface CategoryDao {
+public interface CategoryDao extends DAO<Category> {
   @Insert
   void insert(Category category);
 
@@ -20,5 +22,5 @@ public interface CategoryDao {
   LiveData<List<Category>> getAllCategories();
 
   @Query("DELETE FROM Categories")
-  void deleteAll();
+  public void deleteAll();
 }

@@ -1,38 +1,50 @@
-package com.sevbesau.moodminer.model.database;
+package com.sevbesau.moodminer.model.database.users;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.sevbesau.moodminer.model.database.BaseEntity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 @Entity(tableName = "Users")
-public class User {
+public class User extends BaseEntity {
 
-  @PrimaryKey
   @NonNull
-  private String email;
-  private String refreshToken;
-  private String accesToken;
+  public String email;
 
-  public static User getUser(JSONObject jsonObject) throws JSONException {
-    String email = "";
-    String refreshToken = "";
-    String accesToken = "";
+  public String refreshToken;
+  public String accesToken;
+
+  public boolean synced = false;
+
+  public static User getFromJson(JSONObject jsonObject) throws JSONException {
+    String email = null;
+    String refreshToken = null;
+    String accesToken = null;
+    Integer id = null;
     if (jsonObject.has("email")) email = jsonObject.getString("email");
+    if (jsonObject.has("id")) id = Integer.parseInt(jsonObject.getString("id"));
     if (jsonObject.has("refreshToken")) refreshToken = jsonObject.getString("refreshToken");
     if (jsonObject.has("accesToken")) accesToken = jsonObject.getString("accesToken");
 
-    User user = new User(email, refreshToken, accesToken);
+    User user = new User(email, refreshToken, accesToken, id);
 
     return user;
   }
 
-  public User(@NonNull String email, String refreshToken, String accesToken) {
+  public User(@NonNull String email, String refreshToken, String accesToken, Integer id) {
     this.email = email;
     this.refreshToken = refreshToken;
     this.accesToken = accesToken;
+    this.id = id;
+  }
+
+  public JSONObject toJson() throws JSONException {
+    return new JSONObject()
+      .put("email", email);
   }
 
 
@@ -49,30 +61,11 @@ public class User {
   @Override
   public String toString() {
     return "User{" +
-      "email='" + email + '\'' +
+      "id='" + id + '\'' +
+      ", synced='" + synced + '\'' +
+      ", email='" + email + '\'' +
       ", refreshToken='" + refreshToken + '\'' +
       ", accesToken='" + accesToken + '\'' +
       '}';
-  }
-
-  public String getEmail() {
-    return email;
-  }
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getAccesToken() {
-    return accesToken;
-  }
-  public void setAccesToken(String accesToken) {
-    this.accesToken = accesToken;
-  }
-
-  public String getRefreshToken() {
-    return refreshToken;
-  }
-  public void setRefreshToken(String refreshToken) {
-    this.refreshToken = refreshToken;
   }
 }

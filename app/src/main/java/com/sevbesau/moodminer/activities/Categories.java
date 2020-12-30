@@ -13,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sevbesau.moodminer.CategoryListAdapter;
 import com.sevbesau.moodminer.model.Model;
-import com.sevbesau.moodminer.model.database.Category;
+import com.sevbesau.moodminer.model.database.categories.Category;
 import com.sevbesau.moodminer.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Categories extends AppCompatActivity

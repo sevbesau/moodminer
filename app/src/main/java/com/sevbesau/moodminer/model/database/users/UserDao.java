@@ -1,4 +1,4 @@
-package com.sevbesau.moodminer.model.database;
+package com.sevbesau.moodminer.model.database.users;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,10 +6,12 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.sevbesau.moodminer.model.database.DAO;
+
 import java.util.List;
 
 @Dao
-public interface UserDao {
+public interface UserDao extends DAO<User> {
   @Insert
   void insert(User user);
 

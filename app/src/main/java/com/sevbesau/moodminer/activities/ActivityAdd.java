@@ -8,16 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 
 import com.sevbesau.moodminer.R;
 import com.sevbesau.moodminer.model.Model;
-import com.sevbesau.moodminer.model.database.Activity;
-import com.sevbesau.moodminer.model.database.Category;
-
-import java.util.List;
 
 public class ActivityAdd extends AppCompatActivity {
   public static final String EXTRA_REPLY_TITLE = "com.sevbesau.moodminer.TITLE_REPLY";

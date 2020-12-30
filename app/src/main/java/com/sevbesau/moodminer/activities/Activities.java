@@ -15,9 +15,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sevbesau.moodminer.ActivityListAdapter;
 import com.sevbesau.moodminer.R;
-import com.sevbesau.moodminer.model.database.Activity;
+import com.sevbesau.moodminer.model.database.activities.Activity;
 import com.sevbesau.moodminer.model.Model;
-import com.sevbesau.moodminer.model.database.Category;
 
 import java.util.List;
 
@@ -44,13 +43,11 @@ public class Activities extends AppCompatActivity
     mRecyclerView.setAdapter(adapter);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-    //mModel = new Model(Activities.this.getApplication());
     mModel = Model.getInstance(Activities.this.getApplication());
 
     mModel.getActivities().observe(this, new Observer<List<Activity>>() {
       @Override
       public void onChanged(@Nullable final List<Activity> activities) {
-        // Update the cached copy of the words in the adapter.
         adapter.setActivities(activities);
       }
     });
@@ -70,7 +67,8 @@ public class Activities extends AppCompatActivity
     if (requestCode == NEW_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
       Activity activity = new Activity(
         data.getStringExtra(ActivityAdd.EXTRA_REPLY_TITLE),
-        data.getStringExtra(ActivityAdd.EXTRA_REPLY_DESCRIPTION)
+        data.getStringExtra(ActivityAdd.EXTRA_REPLY_DESCRIPTION),
+        null
       );
       mModel.insertActivity(activity);
     } else {

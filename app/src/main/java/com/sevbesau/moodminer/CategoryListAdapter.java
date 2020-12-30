@@ -1,7 +1,6 @@
 package com.sevbesau.moodminer;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.sevbesau.moodminer.model.database.Category;
+import com.sevbesau.moodminer.model.database.categories.Category;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
@@ -69,9 +67,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     void bindTo(Category currentCategory) {
-      mTitleText.setText(currentCategory.getName());
-      mDescriptionText.setText(currentCategory.getDescription());
-      Glide.with(mContext).load(currentCategory.getImageResource()).into(mCategoryImage);
+      mTitleText.setText(currentCategory.name);
+      mDescriptionText.setText(currentCategory.description);
+      Glide.with(mContext).load(currentCategory.imageResource).into(mCategoryImage);
     }
   }
 }

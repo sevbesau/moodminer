@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sevbesau.moodminer.model.database.Activity;
+import com.sevbesau.moodminer.model.database.activities.Activity;
 
 import java.util.List;
 
@@ -31,9 +31,9 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
   public void onBindViewHolder(ActivityViewHolder holder, int position) {
     if (mActivities != null) {
       Activity current = mActivities.get(position);
-      holder.titleTextView.setText(current.getTitle());
+      holder.titleTextView.setText(current.title);
       holder.categoryTextView.setText("no category");
-      holder.descriptionTextView.setText(current.getDescription());
+      holder.descriptionTextView.setText(current.description);
     } else {
       // Covers the case of data not being ready yet.
       holder.titleTextView.setText("no title");
