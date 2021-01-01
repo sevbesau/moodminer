@@ -37,7 +37,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
       Category current = mCategories.get(position);
       holder.bindTo(current);
     } else {
-      holder.bindTo(new Category("no name", "no title", R.drawable.img_golf));
+      holder.bindTo(new Category("no name", "no title", R.drawable.img_golf, null));
     }
   }
 

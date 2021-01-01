@@ -54,6 +54,7 @@ public class Categories extends AppCompatActivity
     mModel.getCategories().observe(this, new Observer<List<Category>>() {
       @Override
       public void onChanged(@Nullable final List<Category> categories) {
+        System.out.println(categories.get(0));
         adapter.setCategories(categories);
       }
     });

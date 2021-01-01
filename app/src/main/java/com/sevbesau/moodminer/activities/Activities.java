@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sevbesau.moodminer.ActivityListAdapter;
 import com.sevbesau.moodminer.R;
+import com.sevbesau.moodminer.model.database.ActivityWithCategory;
 import com.sevbesau.moodminer.model.database.activities.Activity;
 import com.sevbesau.moodminer.model.Model;
 
@@ -48,6 +49,7 @@ public class Activities extends AppCompatActivity
     mModel.getActivities().observe(this, new Observer<List<Activity>>() {
       @Override
       public void onChanged(@Nullable final List<Activity> activities) {
+        System.out.println("inheritance"+activities);
         adapter.setActivities(activities);
       }
     });
@@ -60,7 +62,6 @@ public class Activities extends AppCompatActivity
     startActivityForResult(intent, NEW_ACTIVITY_REQUEST_CODE);
   }
 
-
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
@@ -68,7 +69,7 @@ public class Activities extends AppCompatActivity
       Activity activity = new Activity(
         data.getStringExtra(ActivityAdd.EXTRA_REPLY_TITLE),
         data.getStringExtra(ActivityAdd.EXTRA_REPLY_DESCRIPTION),
-        null
+        data.getStringExtra(ActivityAdd.EXTRA_REPLY_CATEGORY)
       );
       mModel.insertActivity(activity);
     } else {

@@ -19,7 +19,8 @@ public class Category extends BaseEntity {
   public String description;
   public Integer imageResource;
 
-  public Category(String name, String description, Integer imageResource) {
+  public Category(String name, String description, Integer imageResource, Integer id) {
+    this.id = id;
     this.name = name;
     this.description = description;
     this.imageResource = imageResource;
@@ -31,7 +32,8 @@ public class Category extends BaseEntity {
     return new Category(
       categoryJson.getString("name"),
       categoryJson.getString("description"),
-      imageResource
+      imageResource,
+      0
     );
   }
 
@@ -39,6 +41,7 @@ public class Category extends BaseEntity {
   public String toString() {
     return "Category{" +
       "name='" + name + '\'' +
+      "id='" + id + '\'' +
       ", description='" + description + '}';
   }
 }

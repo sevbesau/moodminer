@@ -21,7 +21,7 @@ public class ActivityPopulator extends Populator {
       Activity activity = new Activity(
         activityTitles[i],
         activityDescriptions[i],
-        null
+        "sociaal"
       );
       mDao.insert(activity);
     }

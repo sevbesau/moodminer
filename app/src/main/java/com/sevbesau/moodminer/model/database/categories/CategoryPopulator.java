@@ -32,7 +32,8 @@ public class CategoryPopulator extends Populator {
       Category category = new Category(
         categoryTitles[i],
         categoryDescriptions[i],
-        R.drawable.img_running
+        R.drawable.img_running,
+        i
       );
       mDao.insert(category);
     }

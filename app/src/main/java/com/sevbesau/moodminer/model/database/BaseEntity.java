@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey;
 @Entity
 public class BaseEntity {
   @NonNull
-  @PrimaryKey(autoGenerate = true)
+  @PrimaryKey()
   public Integer id;
 }

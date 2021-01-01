@@ -22,7 +22,7 @@ import com.sevbesau.moodminer.model.database.users.UserPopulator;
 import java.util.ArrayList;
 import java.util.List;
 
-@Database(entities = {BaseEntity.class, Activity.class, Category.class, User.class}, version = 4, exportSchema = false)
+@Database(entities = {BaseEntity.class, Activity.class, Category.class, User.class}, version = 6, exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
 
   public abstract ActivityDao activityDao();
@@ -51,7 +51,7 @@ public abstract class AppRoomDatabase extends RoomDatabase {
       @Override
       public void onOpen(@NonNull SupportSQLiteDatabase db) {
         super.onOpen(db);
-        //new PopulateDbAsync(INSTANCE).execute();
+        new PopulateDbAsync(INSTANCE).execute();
       }
     };
 

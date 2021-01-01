@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.sevbesau.moodminer.model.database.ActivityWithCategory;
 import com.sevbesau.moodminer.model.database.DAO;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public interface ActivityDao extends DAO<Activity> {
 
   @Query("SELECT * FROM Activities")
   LiveData<List<Activity>> getAllActivities();
+
+  @Query("SELECT * FROM Activities as activity JOIN Categories as category ON activity.categoryName = category.name")
+  LiveData<List<ActivityWithCategory>> getActivitiesWithCategory();
 
   @Query("DELETE FROM Activities")
   public void deleteAll();

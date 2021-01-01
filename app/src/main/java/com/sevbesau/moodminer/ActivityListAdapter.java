@@ -15,7 +15,7 @@ import java.util.List;
 public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ActivityViewHolder> {
 
   private final LayoutInflater mInflater;
-  private List<Activity> mActivities; // Cached copy of words
+  private List<Activity> mActivities; // Cached copy of activities
 
   public ActivityListAdapter(Context context) {
     mInflater = LayoutInflater.from(context);
@@ -32,7 +32,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
     if (mActivities != null) {
       Activity current = mActivities.get(position);
       holder.titleTextView.setText(current.title);
-      holder.categoryTextView.setText("no category");
+      holder.categoryTextView.setText(current.categoryName);
       holder.descriptionTextView.setText(current.description);
     } else {
       // Covers the case of data not being ready yet.

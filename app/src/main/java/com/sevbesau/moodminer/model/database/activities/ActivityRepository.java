@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.sevbesau.moodminer.model.database.ActivityWithCategory;
 import com.sevbesau.moodminer.model.database.AppRoomDatabase;
 import com.sevbesau.moodminer.model.database.AsyncDelete;
 import com.sevbesau.moodminer.model.database.AsyncInsert;
@@ -25,6 +26,10 @@ public class ActivityRepository {
 
   public LiveData<List<Activity>> getActivities() {
     return mActivities;
+  }
+
+  public LiveData<List<ActivityWithCategory>> getActivitiesWithCategory() {
+    return mActivityDao.getActivitiesWithCategory();
   }
 
   public void deleteAll() {

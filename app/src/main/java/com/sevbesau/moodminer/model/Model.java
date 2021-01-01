@@ -14,6 +14,7 @@ import com.sevbesau.moodminer.activities.Listener;
 import com.sevbesau.moodminer.model.api.APIListener;
 import com.sevbesau.moodminer.model.api.AbstractAPIListener;
 import com.sevbesau.moodminer.model.api.WebAPI;
+import com.sevbesau.moodminer.model.database.ActivityWithCategory;
 import com.sevbesau.moodminer.model.database.activities.Activity;
 import com.sevbesau.moodminer.model.database.activities.ActivityRepository;
 import com.sevbesau.moodminer.model.database.categories.Category;
@@ -61,8 +62,15 @@ public class Model extends AndroidViewModel {
   }
 
   private List<Listener> listeners = new ArrayList<>();
-  public void addListener(Listener l) { listeners.add(l); }
-  public void removeListener(Listener l) { listeners.remove(l); }
+
+  public void addListener(Listener l) {
+    listeners.add(l);
+  }
+
+  public void removeListener(Listener l) {
+    listeners.remove(l);
+  }
+
   private void pingListeners() {
     for (Listener l : listeners) {
       l.ping();
@@ -70,7 +78,7 @@ public class Model extends AndroidViewModel {
   }
 
   private void authLoop(User user) {
-    System.out.println("sync authLoop "+user);
+    System.out.println("sync authLoop " + user);
     if (user.refreshToken != null && user.accesToken == null) {
       authenticate(user);
     }
@@ -78,8 +86,8 @@ public class Model extends AndroidViewModel {
       syncUser(user);
     }
     if (user.synced) {
-      syncActivities(user);
-      syncCategories(user);
+      //syncActivities(user);
+      //syncCategories(user);
       pingListeners();
     }
   }
@@ -152,6 +160,7 @@ public class Model extends AndroidViewModel {
     mActivityRepository.getActivities().observe(loginOwer, new Observer<List<Activity>>() {
       @Override
       public void onChanged(final List<Activity> activities) {
+        mActivityRepository.deleteAll();
         for (Activity activity : activities) {
           try {
             mApi.post(user, "activities", activity.toJson(user.id), new AbstractAPIListener() {
@@ -170,12 +179,12 @@ public class Model extends AndroidViewModel {
           public void onData(JSONObject res) {
             try {
               JSONArray jsonActivities = res.getJSONArray("data");
-              System.out.println("sync get activities: "+jsonActivities);
+              System.out.println("sync get activities: " + jsonActivities);
               for (int i = 0; i < jsonActivities.length(); i++) {
                 Activity newActivity = Activity.getFromJson(jsonActivities.getJSONObject(i));
                 // TODO get this working!
                 if (!activities.contains(newActivity)) {
-                  System.out.println("synced new activity: "+newActivity);
+                  System.out.println("synced new activity: " + newActivity);
                   mActivityRepository.insert(newActivity);
                 }
               }
@@ -215,6 +224,10 @@ public class Model extends AndroidViewModel {
 
   public LiveData<List<Activity>> getActivities() {
     return mActivities;
+  }
+
+  public LiveData<List<ActivityWithCategory>> getActivitiesWithCategory() {
+    return mActivityRepository.getActivitiesWithCategory();
   }
 
   public LiveData<List<Category>> getCategories() {

@@ -8,12 +8,15 @@
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recyclerView"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="357dp"
+    android:layout_height="467dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintStart_toStartOf="parent" />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/addActivityFAB"
@@ -23,10 +26,10 @@
     android:layout_marginRight="16dp"
     android:layout_marginBottom="16dp"
     android:clickable="true"
+    android:focusable="true"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toStartOf="@+id/setMoodFab"
-    app:srcCompat="@drawable/ic_add_for_fab"
-    android:focusable="true" />
+    app:srcCompat="@drawable/ic_add_for_fab" />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/setMoodFab"
@@ -36,9 +39,46 @@
     android:layout_marginRight="16dp"
     android:layout_marginBottom="16dp"
     android:clickable="true"
+    android:focusable="true"
     app:backgroundTint="@color/colorPrimary"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:srcCompat="@drawable/ic_mood_for_fab"
-    android:focusable="true" />
+    app:srcCompat="@drawable/ic_mood_for_fab" />
+
+  <TextView
+    android:id="@+id/day_quality"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    android:text="Your score"
+    app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+    app:layout_constraintEnd_toStartOf="@+id/ratingBar"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/ratingBar" />
+
+  <RatingBar
+    android:id="@+id/ratingBar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+  <TextView
+    android:id="@+id/textView5"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="44dp"
+    android:text="Today"
+    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    android:textSize="36sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
