@@ -13,11 +13,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sevbesau.moodminer.ActivityListAdapter;
+import com.sevbesau.moodminer.adapters.ActivityListAdapter;
 import com.sevbesau.moodminer.R;
-import com.sevbesau.moodminer.model.database.ActivityWithCategory;
-import com.sevbesau.moodminer.model.database.activities.Activity;
+import com.sevbesau.moodminer.model.database.entities.Activity;
 import com.sevbesau.moodminer.model.Model;
+import com.sevbesau.moodminer.model.database.entities.ActivityWithCategories;
 
 import java.util.List;
 
@@ -36,20 +36,19 @@ public class Activities extends AppCompatActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activities);
 
-    mAddButton = findViewById(R.id.addActivityFAB);
+    mAddButton = findViewById(R.id.day_add_activity);
     mAddButton.setOnClickListener(this);
 
     final ActivityListAdapter adapter = new ActivityListAdapter(this);
-    mRecyclerView = findViewById(R.id.recyclerView);
+    mRecyclerView = findViewById(R.id.day_activitiesRecycler);
     mRecyclerView.setAdapter(adapter);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     mModel = Model.getInstance(Activities.this.getApplication());
 
-    mModel.getActivities().observe(this, new Observer<List<Activity>>() {
+    mModel.getActivitiesWithCategories().observe(this, new Observer<List<ActivityWithCategories>>() {
       @Override
-      public void onChanged(@Nullable final List<Activity> activities) {
-        System.out.println("inheritance"+activities);
+      public void onChanged(@Nullable final List<ActivityWithCategories> activities) {
         adapter.setActivities(activities);
       }
     });
@@ -57,8 +56,8 @@ public class Activities extends AppCompatActivity
 
   @Override
   public void onClick(View view) {
-    Log.d(LOG_TAG, "Launching AddActivity");
-    Intent intent = new Intent(this, ActivityAdd.class);
+    Log.d(LOG_TAG, "Launching ActivityNew");
+    Intent intent = new Intent(this, ActivityNew.class);
     startActivityForResult(intent, NEW_ACTIVITY_REQUEST_CODE);
   }
 
@@ -67,11 +66,11 @@ public class Activities extends AppCompatActivity
 
     if (requestCode == NEW_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
       Activity activity = new Activity(
-        data.getStringExtra(ActivityAdd.EXTRA_REPLY_TITLE),
-        data.getStringExtra(ActivityAdd.EXTRA_REPLY_DESCRIPTION),
-        data.getStringExtra(ActivityAdd.EXTRA_REPLY_CATEGORY)
+        data.getStringExtra(ActivityNew.EXTRA_REPLY_TITLE),
+        data.getStringExtra(ActivityNew.EXTRA_REPLY_DESCRIPTION)
       );
-      mModel.insertActivity(activity);
+      mModel.insertActivity(activity, data.getLongExtra(ActivityNew.EXTRA_REPLY_CATEGORY_ID, 1));
+
     } else {
       Toast.makeText(
         getApplicationContext(),

@@ -1,12 +1,12 @@
-package com.sevbesau.moodminer.model.database.categories;
+package com.sevbesau.moodminer.model.database.populators;
 
 import com.sevbesau.moodminer.R;
-import com.sevbesau.moodminer.model.database.DAO;
-import com.sevbesau.moodminer.model.database.Populator;
+import com.sevbesau.moodminer.model.database.AppDAO;
+import com.sevbesau.moodminer.model.database.entities.Category;
 
 public class CategoryPopulator extends Populator {
 
-  public CategoryPopulator(DAO dao) {
+  public CategoryPopulator(AppDAO dao) {
     super(dao);
   }
 
@@ -30,12 +30,13 @@ public class CategoryPopulator extends Populator {
   public void populate() {
     for (int i = 0; i <= categoryTitles.length - 1; i++) {
       Category category = new Category(
+        i,
         categoryTitles[i],
         categoryDescriptions[i],
-        R.drawable.img_running,
-        i
+        R.drawable.img_running
       );
-      mDao.insert(category);
+      mDao.insertCategory(category);
+      System.out.println("populated category: "+category);
     }
   }
 }

@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer;
 
 import com.sevbesau.moodminer.R;
 import com.sevbesau.moodminer.model.Model;
-import com.sevbesau.moodminer.model.database.users.User;
+import com.sevbesau.moodminer.model.database.entities.User;
 
 public class Login extends AppCompatActivity implements Listener {
 

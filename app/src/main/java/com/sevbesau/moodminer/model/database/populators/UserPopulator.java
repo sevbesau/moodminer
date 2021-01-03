@@ -1,16 +1,15 @@
-package com.sevbesau.moodminer.model.database.users;
+package com.sevbesau.moodminer.model.database.populators;
 
-import com.sevbesau.moodminer.model.database.DAO;
-import com.sevbesau.moodminer.model.database.Populator;
+import com.sevbesau.moodminer.model.database.AppDAO;
 
 public class UserPopulator extends Populator {
 
-  public UserPopulator(DAO dao) {
+  public UserPopulator(AppDAO dao) {
     super(dao);
   }
 
   public void populate() {
-    mDao.deleteAll();
+    mDao.deleteAllUsers();
     /*
     mDao.insert(new User(
       //"info@sevbesau.xyz",

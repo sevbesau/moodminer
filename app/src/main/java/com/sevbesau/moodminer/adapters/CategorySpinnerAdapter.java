@@ -1,4 +1,4 @@
-package com.sevbesau.moodminer;
+package com.sevbesau.moodminer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.sevbesau.moodminer.model.database.categories.Category;
+import com.sevbesau.moodminer.R;
+import com.sevbesau.moodminer.model.database.entities.Category;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CategorySpinnerAdapter extends ArrayAdapter<Category> {
 
@@ -45,7 +45,7 @@ public class CategorySpinnerAdapter extends ArrayAdapter<Category> {
     Category currentItem = getItem(position);
     if (currentItem != null) {
       Glide.with(super.getContext()).load(currentItem.imageResource).into(categoryImage);
-      categoryTitle.setText(currentItem.name);
+      categoryTitle.setText(currentItem.categoryName);
     }
     return convertView;
   }

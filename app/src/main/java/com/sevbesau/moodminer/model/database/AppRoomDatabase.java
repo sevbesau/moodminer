@@ -9,25 +9,30 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.sevbesau.moodminer.model.database.activities.Activity;
-import com.sevbesau.moodminer.model.database.activities.ActivityDao;
-import com.sevbesau.moodminer.model.database.activities.ActivityPopulator;
-import com.sevbesau.moodminer.model.database.categories.Category;
-import com.sevbesau.moodminer.model.database.categories.CategoryDao;
-import com.sevbesau.moodminer.model.database.categories.CategoryPopulator;
-import com.sevbesau.moodminer.model.database.users.User;
-import com.sevbesau.moodminer.model.database.users.UserDao;
-import com.sevbesau.moodminer.model.database.users.UserPopulator;
+import com.sevbesau.moodminer.model.database.entities.Activity;
+import com.sevbesau.moodminer.model.database.entities.ActivityCategoryCrossRef;
+import com.sevbesau.moodminer.model.database.entities.Category;
+import com.sevbesau.moodminer.model.database.populators.ActivityPopulator;
+import com.sevbesau.moodminer.model.database.populators.CategoryPopulator;
+import com.sevbesau.moodminer.model.database.entities.Day;
+import com.sevbesau.moodminer.model.database.entities.DayActivityCrossRef;
+import com.sevbesau.moodminer.model.database.entities.User;
+import com.sevbesau.moodminer.model.database.populators.Populator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Database(entities = {BaseEntity.class, Activity.class, Category.class, User.class}, version = 6, exportSchema = false)
+@Database(entities = {
+  Activity.class,
+  ActivityCategoryCrossRef.class,
+  Category.class,
+  User.class,
+  Day.class,
+  DayActivityCrossRef.class
+}, version = 15, exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
 
-  public abstract ActivityDao activityDao();
-  public abstract CategoryDao categoryDao();
-  public abstract UserDao userDao();
+  public abstract AppDAO DAO();
 
   private static AppRoomDatabase INSTANCE;
 
@@ -66,9 +71,10 @@ public abstract class AppRoomDatabase extends RoomDatabase {
     PopulateDbAsync(AppRoomDatabase db) {
       mDb = db;
       mPopulators = new ArrayList<>();
-      mPopulators.add(new ActivityPopulator(db.activityDao()));
-      mPopulators.add(new CategoryPopulator(db.categoryDao()));
-      mPopulators.add(new UserPopulator(db.userDao()));
+      mPopulators.add(new CategoryPopulator(db.DAO()));
+      //mPopulators.add(new ActivityPopulator(db.DAO()));
+      //mPopulators.add(new UserPopulator(db.userDao()));
+      //mPopulators.add(new DayPopulator(db.dayDao()));
     }
 
     private void populateAll() {
@@ -79,8 +85,9 @@ public abstract class AppRoomDatabase extends RoomDatabase {
 
     @Override
     protected Void doInBackground(final Void... params) {
-      mDb.clearAllTables();
-      populateAll();
+      //mDb.clearAllTables();
+      mDb.DAO().deleteAllUsers();
+      //populateAll();
       return null;
     }
   }

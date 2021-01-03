@@ -1,4 +1,4 @@
-package com.sevbesau.moodminer;
+package com.sevbesau.moodminer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.sevbesau.moodminer.model.database.categories.Category;
+import com.sevbesau.moodminer.R;
+import com.sevbesau.moodminer.model.database.entities.Category;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
       Category current = mCategories.get(position);
       holder.bindTo(current);
     } else {
-      holder.bindTo(new Category("no name", "no title", R.drawable.img_golf, null));
+      holder.bindTo(new Category(0, "no name", "no title", R.drawable.img_golf));
     }
   }
 
@@ -67,7 +68,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     void bindTo(Category currentCategory) {
-      mTitleText.setText(currentCategory.name);
+      mTitleText.setText(currentCategory.categoryName);
       mDescriptionText.setText(currentCategory.description);
       Glide.with(mContext).load(currentCategory.imageResource).into(mCategoryImage);
     }

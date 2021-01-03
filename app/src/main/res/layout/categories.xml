@@ -7,18 +7,18 @@
   android:paddingRight="16dp">
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recyclerView"
+    android:id="@+id/day_activitiesRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:scrollbars="vertical" />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/addActivityFAB"
+    android:id="@+id/day_add_activity"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignRight="@+id/recyclerView"
-    android:layout_alignBottom="@+id/recyclerView"
+    android:layout_alignRight="@+id/day_activitiesRecycler"
+    android:layout_alignBottom="@+id/day_activitiesRecycler"
     android:clickable="true"
     app:srcCompat="@drawable/ic_add_for_fab" />
 

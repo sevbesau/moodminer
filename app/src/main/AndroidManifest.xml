@@ -18,7 +18,7 @@
     <activity android:name=".activities.Categories" />
     <activity android:name=".activities.Activities" />
     <activity android:name=".activities.Signup" />
-    <activity android:name=".activities.ActivityAdd" />
+    <activity android:name=".activities.ActivityNew" />
     <activity android:name=".activities.Main" />
     <activity android:name=".activities.Login">
       <intent-filter>

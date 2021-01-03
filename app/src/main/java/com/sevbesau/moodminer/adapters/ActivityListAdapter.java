@@ -1,4 +1,4 @@
-package com.sevbesau.moodminer;
+package com.sevbesau.moodminer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,14 +8,15 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sevbesau.moodminer.model.database.activities.Activity;
+import com.sevbesau.moodminer.R;
+import com.sevbesau.moodminer.model.database.entities.ActivityWithCategories;
 
 import java.util.List;
 
 public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ActivityViewHolder> {
 
   private final LayoutInflater mInflater;
-  private List<Activity> mActivities; // Cached copy of activities
+  private List<ActivityWithCategories> mActivities; // Cached copy of activities
 
   public ActivityListAdapter(Context context) {
     mInflater = LayoutInflater.from(context);
@@ -30,10 +31,12 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
   @Override
   public void onBindViewHolder(ActivityViewHolder holder, int position) {
     if (mActivities != null) {
-      Activity current = mActivities.get(position);
-      holder.titleTextView.setText(current.title);
-      holder.categoryTextView.setText(current.categoryName);
-      holder.descriptionTextView.setText(current.description);
+      ActivityWithCategories current = mActivities.get(position);
+      System.out.println("activity: "+current);
+      holder.titleTextView.setText(current.activity.title);
+      // TODO allow multiple activities
+      if (current.categories.size() > 0) holder.categoryTextView.setText(current.categories.get(0).categoryName);
+      holder.descriptionTextView.setText(current.activity.description);
     } else {
       // Covers the case of data not being ready yet.
       holder.titleTextView.setText("no title");
@@ -42,7 +45,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
     }
   }
 
-  public void setActivities(List<Activity> activities) {
+  public void setActivities(List<ActivityWithCategories> activities) {
     mActivities = activities;
     notifyDataSetChanged();
   }

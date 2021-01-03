@@ -2,10 +2,7 @@ package com.sevbesau.moodminer.model;
 
 import android.app.Application;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -14,19 +11,23 @@ import com.sevbesau.moodminer.activities.Listener;
 import com.sevbesau.moodminer.model.api.APIListener;
 import com.sevbesau.moodminer.model.api.AbstractAPIListener;
 import com.sevbesau.moodminer.model.api.WebAPI;
-import com.sevbesau.moodminer.model.database.ActivityWithCategory;
-import com.sevbesau.moodminer.model.database.activities.Activity;
-import com.sevbesau.moodminer.model.database.activities.ActivityRepository;
-import com.sevbesau.moodminer.model.database.categories.Category;
-import com.sevbesau.moodminer.model.database.categories.CategoryRepository;
-import com.sevbesau.moodminer.model.database.users.User;
-import com.sevbesau.moodminer.model.database.users.UserRepository;
+import com.sevbesau.moodminer.model.database.entities.Day;
+import com.sevbesau.moodminer.model.database.repositories.DayRepository;
+import com.sevbesau.moodminer.model.database.entities.ActivityWithCategories;
+import com.sevbesau.moodminer.model.database.entities.Activity;
+import com.sevbesau.moodminer.model.database.repositories.ActivityRepository;
+import com.sevbesau.moodminer.model.database.entities.Category;
+import com.sevbesau.moodminer.model.database.repositories.CategoryRepository;
+import com.sevbesau.moodminer.model.database.entities.DayWithActivitiesAndCategories;
+import com.sevbesau.moodminer.model.database.entities.User;
+import com.sevbesau.moodminer.model.database.repositories.UserRepository;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Model extends AndroidViewModel {
@@ -34,13 +35,13 @@ public class Model extends AndroidViewModel {
   private ActivityRepository mActivityRepository;
   private CategoryRepository mCategoryRepository;
   private UserRepository mUserRepository;
-
-  private LiveData<List<Activity>> mActivities;
-  private LiveData<List<Category>> mCategories;
+  private DayRepository mDayRepository;
 
   private WebAPI mApi;
 
   private static Model sInstance;
+
+  private Integer mUserId;
 
   public static Model getInstance(Application application) {
     if (sInstance == null) {
@@ -55,10 +56,9 @@ public class Model extends AndroidViewModel {
     mApi = new WebAPI(application);
 
     mActivityRepository = new ActivityRepository(application);
-    mActivities = mActivityRepository.getActivities();
     mCategoryRepository = new CategoryRepository(application);
-    mCategories = mCategoryRepository.getCategories();
     mUserRepository = new UserRepository(application);
+    mDayRepository = new DayRepository(application);
   }
 
   private List<Listener> listeners = new ArrayList<>();
@@ -127,7 +127,8 @@ public class Model extends AndroidViewModel {
           userWithId.synced = true;
           userWithId.refreshToken = user.refreshToken;
           userWithId.accesToken = user.accesToken;
-          mUserRepository.insert(user);
+          mUserRepository.insert(userWithId);
+          mUserId = userWithId.userId;
           authLoop(userWithId);
         }
       });
@@ -157,13 +158,13 @@ public class Model extends AndroidViewModel {
   public void syncActivities(final User user) {
     System.out.println("sync activities");
     // post all stored activities
-    mActivityRepository.getActivities().observe(loginOwer, new Observer<List<Activity>>() {
+    mActivityRepository.getActivities(mUserId).observe(loginOwer, new Observer<List<Activity>>() {
       @Override
       public void onChanged(final List<Activity> activities) {
         mActivityRepository.deleteAll();
         for (Activity activity : activities) {
           try {
-            mApi.post(user, "activities", activity.toJson(user.id), new AbstractAPIListener() {
+            mApi.post(user, "activities", activity.toJson(user.userId), new AbstractAPIListener() {
               @Override
               public void onData(JSONObject res) {
                 System.out.println("sync activity " + res);
@@ -185,7 +186,7 @@ public class Model extends AndroidViewModel {
                 // TODO get this working!
                 if (!activities.contains(newActivity)) {
                   System.out.println("synced new activity: " + newActivity);
-                  mActivityRepository.insert(newActivity);
+                  mActivityRepository.insert(newActivity, 0);
                 }
               }
             } catch (JSONException error) {
@@ -222,23 +223,39 @@ public class Model extends AndroidViewModel {
     mUserRepository.update(user);
   }
 
-  public LiveData<List<Activity>> getActivities() {
-    return mActivities;
+  public LiveData<List<ActivityWithCategories>> getActivitiesWithCategoriesByDay() {
+    return mDayRepository.getActivitiesWithCategoriesByDay(mUserId, new Date());
   }
 
-  public LiveData<List<ActivityWithCategory>> getActivitiesWithCategory() {
-    return mActivityRepository.getActivitiesWithCategory();
+  public LiveData<List<Activity>> getActivities() {
+    return mActivityRepository.getActivities(mUserId);
+  }
+
+  public LiveData<List<ActivityWithCategories>> getActivitiesWithCategories() {
+    return mActivityRepository.getActivitiesWithCategory(mUserId);
   }
 
   public LiveData<List<Category>> getCategories() {
-    return mCategories;
+    return mCategoryRepository.getCategories();
   }
 
-  public void insertActivity(Activity activity) {
-    mActivityRepository.insert(activity);
+  public void insertActivity(Activity activity, long categoryId) {
+    mActivityRepository.insert(activity, categoryId);
   }
 
   public void insertCategory(Category category) {
     mCategoryRepository.insert(category);
+  }
+
+  public void insertDayActivity(Activity activity, Integer dayId) {
+    mDayRepository.insertActivity(activity, dayId);
+  }
+
+  public LiveData<Day> getToday() {
+    return mDayRepository.getDay(mUserId, new Date());
+  }
+
+  public void updateDay(Day day) {
+    mDayRepository.update(day);
   }
 }

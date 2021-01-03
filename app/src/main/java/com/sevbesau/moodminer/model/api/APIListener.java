@@ -1,8 +1,7 @@
 package com.sevbesau.moodminer.model.api;
 
-import com.sevbesau.moodminer.model.database.users.User;
+import com.sevbesau.moodminer.model.database.entities.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

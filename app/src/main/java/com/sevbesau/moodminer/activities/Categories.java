@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sevbesau.moodminer.CategoryListAdapter;
+import com.sevbesau.moodminer.adapters.CategoryListAdapter;
 import com.sevbesau.moodminer.model.Model;
-import com.sevbesau.moodminer.model.database.categories.Category;
+import com.sevbesau.moodminer.model.database.entities.Category;
 import com.sevbesau.moodminer.R;
 
 import java.util.List;
@@ -39,12 +39,12 @@ public class Categories extends AppCompatActivity
       System.out.println("image "+categoryImageResources.getResourceId(i, 0));
     }
 
-    mFloatingActionButton = findViewById(R.id.addActivityFAB);
+    mFloatingActionButton = findViewById(R.id.day_add_activity);
     mFloatingActionButton.setOnClickListener(this);
 
     final CategoryListAdapter adapter = new CategoryListAdapter(this);
     //adapter = new CategoryAdapter(this, mCategoryData);
-    mRecyclerView = findViewById(R.id.recyclerView);
+    mRecyclerView = findViewById(R.id.day_activitiesRecycler);
     mRecyclerView.setAdapter(adapter);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

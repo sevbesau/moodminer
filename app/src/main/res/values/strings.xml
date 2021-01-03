@@ -1,7 +1,7 @@
 <resources>
   <string name="app_name">Mood Miner</string>
-  <string name="category_title_placeholder">category title</string>
-  <string name="category_description_placeholder">category description</string>
+  <string name="category_title_placeholder">day title</string>
+  <string name="category_description_placeholder">day description</string>
   <string name="login_button">login</string>
   <string name="signup_button">sign up</string>
   <string name="email_hint">Email addres</string>

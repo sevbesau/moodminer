@@ -1,6 +1,6 @@
 package com.sevbesau.moodminer.model.api;
 
-import com.sevbesau.moodminer.model.database.users.User;
+import com.sevbesau.moodminer.model.database.entities.User;
 
 public interface API {
   void login(String email, String password, APIListener listener);

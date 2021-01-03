@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -13,18 +12,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
-import com.sevbesau.moodminer.CategorySpinnerAdapter;
+import com.sevbesau.moodminer.adapters.CategorySpinnerAdapter;
 import com.sevbesau.moodminer.R;
 import com.sevbesau.moodminer.model.Model;
-import com.sevbesau.moodminer.model.database.categories.Category;
+import com.sevbesau.moodminer.model.database.entities.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityAdd extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ActivityNew extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
   public static final String EXTRA_REPLY_TITLE = "com.sevbesau.moodminer.TITLE_REPLY";
   public static final String EXTRA_REPLY_DESCRIPTION = "com.sevbesau.moodminer.DESCRIPTION_REPLY";
-  public static final String EXTRA_REPLY_CATEGORY = "com.sevbesau.moodminer.CATEGORY";
+  public static final String EXTRA_REPLY_CATEGORY_ID = "com.sevbesau.moodminer.CATEGORY_ID";
 
   private EditText mTitleEditText;
   private EditText mDescriptionEditText;
@@ -48,12 +47,9 @@ public class ActivityAdd extends AppCompatActivity implements AdapterView.OnItem
 
     mCategories = new ArrayList<>();
     mAdapter = new CategorySpinnerAdapter(this, mCategories);
-    mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    //mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-    //final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoriesSpinnerModel);
-
-
-    mModel = Model.getInstance(ActivityAdd.this.getApplication());
+    mModel = Model.getInstance(ActivityNew.this.getApplication());
 
     mModel.getCategories().observe(this, new Observer<List<Category>>() {
       @Override
@@ -72,7 +68,6 @@ public class ActivityAdd extends AppCompatActivity implements AdapterView.OnItem
   @Override
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
     mSelectedCategory = (Category) parent.getItemAtPosition(position);
-    System.out.println("spinner "+mSelectedCategory.id+mSelectedCategory.toString());
   }
 
   @Override
@@ -87,7 +82,9 @@ public class ActivityAdd extends AppCompatActivity implements AdapterView.OnItem
       String description = mDescriptionEditText.getText().toString();
       replyIntent.putExtra(EXTRA_REPLY_TITLE, title);
       replyIntent.putExtra(EXTRA_REPLY_DESCRIPTION, description);
-      replyIntent.putExtra(EXTRA_REPLY_CATEGORY, mSelectedCategory.name);
+      // TODO User
+      //replyIntent.putExtra(EXTRA_REPLY_OWNERID, mUser.userId);
+      replyIntent.putExtra(EXTRA_REPLY_CATEGORY_ID, mSelectedCategory.categoryId);
       setResult(RESULT_OK, replyIntent);
     }
     finish();

@@ -1,16 +1,17 @@
-package com.sevbesau.moodminer.model.database.users;
+package com.sevbesau.moodminer.model.database.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.sevbesau.moodminer.model.database.BaseEntity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 @Entity(tableName = "Users")
-public class User extends BaseEntity {
+public class User {
+
+  @PrimaryKey
+  public int userId;
 
   @NonNull
   public String email;
@@ -24,22 +25,24 @@ public class User extends BaseEntity {
     String email = null;
     String refreshToken = null;
     String accesToken = null;
-    Integer id = null;
+    Integer id = -1;
     if (jsonObject.has("email")) email = jsonObject.getString("email");
     if (jsonObject.has("id")) id = Integer.parseInt(jsonObject.getString("id"));
     if (jsonObject.has("refreshToken")) refreshToken = jsonObject.getString("refreshToken");
     if (jsonObject.has("accesToken")) accesToken = jsonObject.getString("accesToken");
+
+    System.out.println("login "+id);
 
     User user = new User(email, refreshToken, accesToken, id);
 
     return user;
   }
 
-  public User(@NonNull String email, String refreshToken, String accesToken, Integer id) {
+  public User(@NonNull String email, String refreshToken, String accesToken, Integer userId) {
     this.email = email;
     this.refreshToken = refreshToken;
     this.accesToken = accesToken;
-    this.id = id;
+    this.userId = userId;
   }
 
   public JSONObject toJson() throws JSONException {
@@ -61,7 +64,7 @@ public class User extends BaseEntity {
   @Override
   public String toString() {
     return "User{" +
-      "id='" + id + '\'' +
+      "id='" + userId + '\'' +
       ", synced='" + synced + '\'' +
       ", email='" + email + '\'' +
       ", refreshToken='" + refreshToken + '\'' +

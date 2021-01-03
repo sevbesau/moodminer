@@ -1,27 +1,28 @@
-package com.sevbesau.moodminer.model.database.categories;
+package com.sevbesau.moodminer.model.database.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.sevbesau.moodminer.R;
-import com.sevbesau.moodminer.model.database.BaseEntity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 @Entity(tableName = "Categories")
-public class Category extends BaseEntity {
+public class Category {
 
   @NonNull
-  public String name;
-
+  @PrimaryKey
+  public long categoryId;
+  public String categoryName;
   public String description;
+  @NonNull
   public Integer imageResource;
 
-  public Category(String name, String description, Integer imageResource, Integer id) {
-    this.id = id;
-    this.name = name;
+  public Category(long categoryId, String categoryName, String description, Integer imageResource) {
+    this.categoryId = categoryId;
+    this.categoryName = categoryName;
     this.description = description;
     this.imageResource = imageResource;
   }
@@ -30,18 +31,17 @@ public class Category extends BaseEntity {
     Integer imageResource = categoryJson.getString("image").equals("") ?
       R.drawable.img_golf : Integer.parseInt(categoryJson.getString("image"));
     return new Category(
+      categoryJson.getInt("categoryId"),
       categoryJson.getString("name"),
       categoryJson.getString("description"),
-      imageResource,
-      0
+      imageResource
     );
   }
 
   @Override
   public String toString() {
     return "Category{" +
-      "name='" + name + '\'' +
-      "id='" + id + '\'' +
+      "name='" + categoryName + '\'' +
       ", description='" + description + '}';
   }
 }
