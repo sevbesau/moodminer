@@ -14,16 +14,16 @@ public class Category {
 
   @NonNull
   @PrimaryKey
-  public long categoryId;
+  public long cId;
   public String categoryName;
-  public String description;
+  public String categoryDescription;
   @NonNull
   public Integer imageResource;
 
-  public Category(long categoryId, String categoryName, String description, Integer imageResource) {
-    this.categoryId = categoryId;
+  public Category(long cId, String categoryName, String categoryDescription, Integer imageResource) {
+    this.cId = cId;
     this.categoryName = categoryName;
-    this.description = description;
+    this.categoryDescription = categoryDescription;
     this.imageResource = imageResource;
   }
 
@@ -42,6 +42,6 @@ public class Category {
   public String toString() {
     return "Category{" +
       "name='" + categoryName + '\'' +
-      ", description='" + description + '}';
+      ", description='" + categoryDescription + '}';
   }
 }

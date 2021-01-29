@@ -1,4 +1,4 @@
-package com.sevbesau.moodminer.model.database.repositories;
+package com.sevbesau.moodminer.model.repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;

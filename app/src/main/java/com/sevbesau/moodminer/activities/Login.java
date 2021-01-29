@@ -14,7 +14,7 @@ import com.sevbesau.moodminer.R;
 import com.sevbesau.moodminer.model.Model;
 import com.sevbesau.moodminer.model.database.entities.User;
 
-public class Login extends AppCompatActivity implements Listener {
+public class Login extends AppCompatActivity {
 
   private static final String LOG_TAG = Login.class.getSimpleName();
 
@@ -38,6 +38,9 @@ public class Login extends AppCompatActivity implements Listener {
           if (user.email != null) {
             mEmailField.setText(user.email);
           }
+          if (user.isLoggedIn) {
+            launchMainActivity();
+          }
         }
       }
     });
@@ -48,12 +51,6 @@ public class Login extends AppCompatActivity implements Listener {
     String password = mPasswordField.getText().toString();
 
     mModel.login(email, password, this);
-    mModel.addListener(this);
-  }
-
-  public void ping() {
-    mModel.removeListener(this);
-    launchMainActivity();
   }
 
   public void launchMainActivity() {

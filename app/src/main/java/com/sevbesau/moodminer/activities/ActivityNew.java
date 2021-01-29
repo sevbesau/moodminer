@@ -68,6 +68,7 @@ public class ActivityNew extends AppCompatActivity implements AdapterView.OnItem
   @Override
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
     mSelectedCategory = (Category) parent.getItemAtPosition(position);
+    System.out.println("activity selected category "+mSelectedCategory);
   }
 
   @Override
@@ -83,8 +84,7 @@ public class ActivityNew extends AppCompatActivity implements AdapterView.OnItem
       replyIntent.putExtra(EXTRA_REPLY_TITLE, title);
       replyIntent.putExtra(EXTRA_REPLY_DESCRIPTION, description);
       // TODO User
-      //replyIntent.putExtra(EXTRA_REPLY_OWNERID, mUser.userId);
-      replyIntent.putExtra(EXTRA_REPLY_CATEGORY_ID, mSelectedCategory.categoryId);
+      replyIntent.putExtra(EXTRA_REPLY_CATEGORY_ID, mSelectedCategory.cId);
       setResult(RESULT_OK, replyIntent);
     }
     finish();

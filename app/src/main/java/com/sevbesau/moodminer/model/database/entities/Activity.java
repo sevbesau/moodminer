@@ -2,6 +2,7 @@ package com.sevbesau.moodminer.model.database.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import org.json.JSONException;
@@ -13,11 +14,13 @@ import java.util.List;
 public class Activity {
 
   @PrimaryKey(autoGenerate = true)
-  public int activityId;
+  public long aId;
+
+  public long categoryId;
 
   @NonNull public String title;
 
-  public String description;
+  public String activityDescription;
 
   //@ForeignKey(entity = Category.class, parentColumns = "name", childColumns = "categoryName")
 
@@ -33,9 +36,9 @@ public class Activity {
   public Integer frequency;
    */
 
-  public Activity(@NonNull String title, String description) {
+  public Activity(@NonNull String title, String activityDescription) {
     this.title = title;
-    this.description = description;
+    this.activityDescription = activityDescription;
   }
 
   public static Activity getFromJson(JSONObject json) throws JSONException {
@@ -50,16 +53,16 @@ public class Activity {
   public JSONObject toJson(Integer ownerId) throws JSONException {
     return new JSONObject()
       .put("title", title)
-      .put("description", description)
+      .put("description", activityDescription)
       .put("ownerId", ownerId);
   }
 
   @Override
   public String toString() {
     return "Activity{" +
-      "id='" + activityId + '\'' +
+      "id='" + aId + '\'' +
       ", title='" + title + '\'' +
-      ", description='" + description + '\'' +
+      ", description='" + activityDescription + '\'' +
       ", userId=" + ownerId +
       '}';
   }

@@ -2,21 +2,22 @@ package com.sevbesau.moodminer.model.database.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 
-@Entity(primaryKeys = {"activityId", "categoryId"})
+@Entity(primaryKeys = {"aId", "cId"})
 public class ActivityCategoryCrossRef {
-    @NonNull public long activityId;
-    @NonNull public long categoryId;
-    public ActivityCategoryCrossRef(long activityId, long categoryId) {
-      this.activityId = activityId;
-      this.categoryId = categoryId;
-    }
+  public long aId;
+  public long cId;
+  public ActivityCategoryCrossRef(long aId, long cId) {
+    this.aId = aId;
+    this.cId = cId;
+  }
 
   @Override
   public String toString() {
     return "ActivityCategoryCrossRef{" +
-      "activityId=" + activityId +
-      ", categoryId=" + categoryId +
+      "activityId=" + aId +
+      ", categoryId=" + cId +
       '}';
   }
 }

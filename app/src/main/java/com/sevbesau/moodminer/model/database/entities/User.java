@@ -20,6 +20,7 @@ public class User {
   public String accesToken;
 
   public boolean synced = false;
+  public boolean isLoggedIn = false;
 
   public static User getFromJson(JSONObject jsonObject) throws JSONException {
     String email = null;
@@ -38,18 +39,17 @@ public class User {
     return user;
   }
 
+  public JSONObject toJson() throws JSONException {
+    return new JSONObject()
+      .put("email", email);
+  }
+
   public User(@NonNull String email, String refreshToken, String accesToken, Integer userId) {
     this.email = email;
     this.refreshToken = refreshToken;
     this.accesToken = accesToken;
     this.userId = userId;
   }
-
-  public JSONObject toJson() throws JSONException {
-    return new JSONObject()
-      .put("email", email);
-  }
-
 
   @Override
   public boolean equals(Object obj) {

@@ -26,13 +26,13 @@ public class ActivityPopulator extends Populator {
         activityTitles[i],
         activityDescriptions[i]
       );
-      activity.activityId = i;
+      activity.aId = i;
       activity.ownerId = 0;
       mDao.insertActivity(activity);
       List<Category> categories = mDao.getSyncAllCategories();
       System.out.println("populated activity: "+activity);
       mDao.insertActivityCategoryCrossRef(new ActivityCategoryCrossRef(
-        activity.activityId, categories.get(0).categoryId
+        activity.aId, categories.get(0).cId
       ));
     }
   }

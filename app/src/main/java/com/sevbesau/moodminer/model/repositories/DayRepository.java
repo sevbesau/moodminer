@@ -1,11 +1,10 @@
-package com.sevbesau.moodminer.model.database.repositories;
+package com.sevbesau.moodminer.model.repositories;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Room;
 
 import com.sevbesau.moodminer.model.database.AppRoomDatabase;
 import com.sevbesau.moodminer.model.database.entities.Activity;
@@ -33,7 +32,7 @@ public class DayRepository {
     return mDays;
   }
 
-  public LiveData<Day> getDay(Integer ownerId, Date date) {
+  public LiveData<Day> getDay(long ownerId, Date date) {
     try {
       insert(new Day(ownerId, date.getDay(), date.getMonth(), date.getYear()));
     } catch (Error e) {
@@ -42,7 +41,7 @@ public class DayRepository {
     return mDb.DAO().getDay(ownerId, date.getDay(), date.getMonth(), date.getYear());
   }
 
-  public LiveData<List<ActivityWithCategories>> getActivitiesWithCategoriesByDay(Integer ownerId, Date date) {
+  public LiveData<List<ActivityWithCategories>> getActivitiesWithCategoriesByDay(long ownerId, Date date) {
     return mDb.DAO().getActivitiesWithCategoriesByDay(ownerId, date.getDay(), date.getMonth(), date.getYear());
   }
 
@@ -50,8 +49,8 @@ public class DayRepository {
     new insertAsyncTask().execute(day);
   }
 
-  public void insertActivity(Activity activity, Integer dayId) {
-    new insertActivityAsyncTask().execute(new DayActivityCrossRef(activity.activityId, dayId));
+  public void insertActivity(Activity activity, long dayId) {
+    new insertActivityAsyncTask().execute(new DayActivityCrossRef(activity.aId, dayId));
   }
 
   public void deleteAll() {

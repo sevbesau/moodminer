@@ -16,10 +16,10 @@ import java.util.List;
 public class Day {
 
   @PrimaryKey(autoGenerate = true)
-  public Integer dayId;
+  public long dayId;
   public float score;
   @NonNull
-  public Integer dayOwnerId;
+  public long dayOwnerId;
   @NonNull
   public Integer day;
   @NonNull
@@ -27,7 +27,7 @@ public class Day {
   @NonNull
   public Integer year;
 
-  public Day(Integer dayOwnerId, Integer day, Integer month, Integer year) {
+  public Day(long dayOwnerId, Integer day, Integer month, Integer year) {
     this.dayOwnerId = dayOwnerId;
     this.day = day;
     this.month = month;

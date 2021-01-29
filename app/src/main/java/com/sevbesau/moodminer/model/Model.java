@@ -12,15 +12,14 @@ import com.sevbesau.moodminer.model.api.APIListener;
 import com.sevbesau.moodminer.model.api.AbstractAPIListener;
 import com.sevbesau.moodminer.model.api.WebAPI;
 import com.sevbesau.moodminer.model.database.entities.Day;
-import com.sevbesau.moodminer.model.database.repositories.DayRepository;
+import com.sevbesau.moodminer.model.repositories.DayRepository;
 import com.sevbesau.moodminer.model.database.entities.ActivityWithCategories;
 import com.sevbesau.moodminer.model.database.entities.Activity;
-import com.sevbesau.moodminer.model.database.repositories.ActivityRepository;
+import com.sevbesau.moodminer.model.repositories.ActivityRepository;
 import com.sevbesau.moodminer.model.database.entities.Category;
-import com.sevbesau.moodminer.model.database.repositories.CategoryRepository;
-import com.sevbesau.moodminer.model.database.entities.DayWithActivitiesAndCategories;
+import com.sevbesau.moodminer.model.repositories.CategoryRepository;
 import com.sevbesau.moodminer.model.database.entities.User;
-import com.sevbesau.moodminer.model.database.repositories.UserRepository;
+import com.sevbesau.moodminer.model.repositories.UserRepository;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,11 +36,9 @@ public class Model extends AndroidViewModel {
   private UserRepository mUserRepository;
   private DayRepository mDayRepository;
 
-  private WebAPI mApi;
-
   private static Model sInstance;
 
-  private Integer mUserId;
+  private long mUserId;
 
   public static Model getInstance(Application application) {
     if (sInstance == null) {
@@ -53,90 +50,17 @@ public class Model extends AndroidViewModel {
   private Model(Application application) {
     super(application);
 
-    mApi = new WebAPI(application);
-
     mActivityRepository = new ActivityRepository(application);
     mCategoryRepository = new CategoryRepository(application);
     mUserRepository = new UserRepository(application);
     mDayRepository = new DayRepository(application);
   }
 
-  private List<Listener> listeners = new ArrayList<>();
-
-  public void addListener(Listener l) {
-    listeners.add(l);
-  }
-
-  public void removeListener(Listener l) {
-    listeners.remove(l);
-  }
-
-  private void pingListeners() {
-    for (Listener l : listeners) {
-      l.ping();
-    }
-  }
-
-  private void authLoop(User user) {
-    System.out.println("sync authLoop " + user);
-    if (user.refreshToken != null && user.accesToken == null) {
-      authenticate(user);
-    }
-    if (!user.synced && user.refreshToken != null && user.accesToken != null) {
-      syncUser(user);
-    }
-    if (user.synced) {
-      //syncActivities(user);
-      //syncCategories(user);
-      pingListeners();
-    }
-  }
-
-  LifecycleOwner loginOwer;
-
   public void login(String email, String password, final LifecycleOwner owner) {
-    System.out.println("sync login");
-    loginOwer = owner;
-    mApi.login(email, password, new AbstractAPIListener() {
-      @Override
-      public void onLogin(User user) {
-        authLoop(user);
-      }
-    });
+    mUserRepository.login(email, password, owner);
   }
 
-  public void authenticate(final User user) {
-    System.out.println("sync authenticate");
-    mApi.token(user.refreshToken, new AbstractAPIListener() {
-      @Override
-      public void onToken(String accesToken) {
-        user.accesToken = accesToken;
-        authLoop(user);
-      }
-    });
-  }
-
-  public void syncUser(final User user) {
-    // post the user, this returns the user with it's id
-    System.out.println("sync user");
-    try {
-      mApi.post(user, "users", user.toJson(), new AbstractAPIListener() {
-        @Override
-        public void onData(JSONObject res) throws JSONException {
-          User userWithId = User.getFromJson(res);
-          userWithId.synced = true;
-          userWithId.refreshToken = user.refreshToken;
-          userWithId.accesToken = user.accesToken;
-          mUserRepository.insert(userWithId);
-          mUserId = userWithId.userId;
-          authLoop(userWithId);
-        }
-      });
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-  }
-
+  /*
   public void syncCategories(User user) {
     System.out.println("sync categories");
     mCategoryRepository.deleteAll();
@@ -186,7 +110,7 @@ public class Model extends AndroidViewModel {
                 // TODO get this working!
                 if (!activities.contains(newActivity)) {
                   System.out.println("synced new activity: " + newActivity);
-                  mActivityRepository.insert(newActivity, 0);
+                  //mActivityRepository.insert(newActivity, 0);
                 }
               }
             } catch (JSONException error) {
@@ -201,9 +125,10 @@ public class Model extends AndroidViewModel {
     // get all stored activities from api
 
   }
+   */
 
   public void signup(String email, String password, APIListener listener) {
-    mApi.signup(email, password, listener);
+    mUserRepository.signup(email, password);
   }
 
   public void setUser(User user) {
@@ -216,7 +141,7 @@ public class Model extends AndroidViewModel {
   }
 
   public LiveData<User> getUser() {
-    return mUserRepository.get();
+    return mUserRepository.getUser();
   }
 
   public void updateUser(User user) {
@@ -232,22 +157,22 @@ public class Model extends AndroidViewModel {
   }
 
   public LiveData<List<ActivityWithCategories>> getActivitiesWithCategories() {
-    return mActivityRepository.getActivitiesWithCategory(mUserId);
+    return mActivityRepository.getActivitiesWithCategories(mUserId);
   }
 
   public LiveData<List<Category>> getCategories() {
     return mCategoryRepository.getCategories();
   }
 
-  public void insertActivity(Activity activity, long categoryId) {
-    mActivityRepository.insert(activity, categoryId);
+  public void insertActivity(Activity activity, List<Long> categoryIds) {
+    mActivityRepository.insert(activity, categoryIds);
   }
 
   public void insertCategory(Category category) {
     mCategoryRepository.insert(category);
   }
 
-  public void insertDayActivity(Activity activity, Integer dayId) {
+  public void insertDayActivity(Activity activity, long dayId) {
     mDayRepository.insertActivity(activity, dayId);
   }
 
@@ -257,5 +182,9 @@ public class Model extends AndroidViewModel {
 
   public void updateDay(Day day) {
     mDayRepository.update(day);
+  }
+
+  public void deleteActivityWithCategories(ActivityWithCategories toDelete) {
+    mActivityRepository.deleteActivityWithCategories(toDelete);
   }
 }

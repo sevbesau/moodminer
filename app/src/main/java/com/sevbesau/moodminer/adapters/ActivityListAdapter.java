@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sevbesau.moodminer.R;
+import com.sevbesau.moodminer.model.database.entities.Activity;
 import com.sevbesau.moodminer.model.database.entities.ActivityWithCategories;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
       holder.titleTextView.setText(current.activity.title);
       // TODO allow multiple activities
       if (current.categories.size() > 0) holder.categoryTextView.setText(current.categories.get(0).categoryName);
-      holder.descriptionTextView.setText(current.activity.description);
+      holder.descriptionTextView.setText(current.activity.activityDescription);
     } else {
       // Covers the case of data not being ready yet.
       holder.titleTextView.setText("no title");
@@ -48,6 +49,10 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
   public void setActivities(List<ActivityWithCategories> activities) {
     mActivities = activities;
     notifyDataSetChanged();
+  }
+
+  public ActivityWithCategories getActivity(int index) {
+    return mActivities.get(index);
   }
 
   // getItemCount() is called many times, and when it is first called,

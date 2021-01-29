@@ -13,8 +13,8 @@ public class ActivityWithCategories {
   @Embedded
   public Activity activity;
   @Relation(
-    parentColumn = "activityId",
-    entityColumn = "categoryId",
+    parentColumn = "aId",
+    entityColumn = "cId",
     associateBy = @Junction(ActivityCategoryCrossRef.class)
   )
   public List<Category> categories;

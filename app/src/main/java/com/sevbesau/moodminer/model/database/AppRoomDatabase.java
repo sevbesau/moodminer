@@ -29,7 +29,7 @@ import java.util.List;
   User.class,
   Day.class,
   DayActivityCrossRef.class
-}, version = 15, exportSchema = false)
+}, version = 20, exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
 
   public abstract AppDAO DAO();
@@ -85,9 +85,9 @@ public abstract class AppRoomDatabase extends RoomDatabase {
 
     @Override
     protected Void doInBackground(final Void... params) {
-      //mDb.clearAllTables();
+      mDb.clearAllTables();
       mDb.DAO().deleteAllUsers();
-      //populateAll();
+      populateAll();
       return null;
     }
   }

@@ -7,7 +7,7 @@ import androidx.room.Entity;
 public class DayActivityCrossRef {
     @NonNull public long activityId;
     @NonNull public long dayId;
-    public DayActivityCrossRef(Integer activityId, Integer dayId) {
+    public DayActivityCrossRef(long activityId, long dayId) {
       this.activityId = activityId;
       this.dayId = dayId;
     }

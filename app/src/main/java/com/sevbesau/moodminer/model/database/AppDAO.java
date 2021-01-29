@@ -33,11 +33,23 @@ public interface AppDAO {
   @Insert
   void insertActivity(Activity activity);
 
-  @Query("SELECT * FROM Activities WHERE ownerId = :userId")
-  LiveData<List<Activity>> getAllActivities(Integer userId);
+  @Transaction
+  @Insert
+  void insertActivityWithCategories(ActivityWithCategories activity);
 
-  @Query("SELECT * FROM Activities WHERE ownerId = :ownerId AND title = :title AND description = :description LIMIT 1")
-  Activity getSyncActivity(String title, Integer ownerId, String description);
+  @Query("SELECT * FROM Activities WHERE ownerId = :userId")
+  LiveData<List<Activity>> getAllActivities(long userId);
+
+  @Query("SELECT * FROM Activities WHERE aId = :activityId LIMIT 1")
+  Activity getSyncActivity(long activityId);
+
+  /*
+  @Transaction
+  @Query("SELECT * FROM Activities as a " +
+    " INNER JOIN ActivityCategoryCrossRef as ac ON a.aId = ac.activityId" +
+    " INNER JOIN Categories as c ON ac.categoryId = c.cId")
+  LiveData<List<ActivityWithCategories>> getActivitiesWithCategories();
+   */
 
   @Transaction
   @Query("SELECT * FROM Activities")
@@ -62,15 +74,15 @@ public interface AppDAO {
   LiveData<List<Day>> getAllDays();
 
   @Query("SELECT * FROM Days WHERE dayOwnerId = :ownerId AND day = :day AND month = :month AND year = :year LIMIT 1")
-  LiveData<Day> getDay(Integer ownerId, Integer day, Integer month, Integer year);
+  LiveData<Day> getDay(long ownerId, Integer day, Integer month, Integer year);
 
   @Transaction
   @Query("SELECT * FROM Days as day" +
     " JOIN DayActivityCrossRef as da ON day.dayId = da.dayId" +
-    " JOIN Activities as activity ON activity.activityId = da.activityId" +
+    " JOIN Activities as activity ON activity.aId = da.activityId" +
     " WHERE dayOwnerId = :ownerId AND day = :day AND month = :month AND year = :year")
   LiveData<List<ActivityWithCategories>> getActivitiesWithCategoriesByDay(
-    Integer ownerId, Integer day, Integer month, Integer year
+    long ownerId, Integer day, Integer month, Integer year
   );
 
   @Query("DELETE FROM Days")
@@ -87,6 +99,9 @@ public interface AppDAO {
 
   @Query("SELECT * FROM Categories")
   LiveData<List<Category>> getAllCategories();
+
+  @Query("SELECT * FROM Categories WHERE cId = :categoryId LIMIT 1")
+  Category getSyncCategory(long categoryId);
 
   @Query("SELECT * FROM Categories")
   List<Category> getSyncAllCategories();

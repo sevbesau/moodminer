@@ -69,7 +69,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     void bindTo(Category currentCategory) {
       mTitleText.setText(currentCategory.categoryName);
-      mDescriptionText.setText(currentCategory.description);
+      mDescriptionText.setText(currentCategory.categoryDescription);
       Glide.with(mContext).load(currentCategory.imageResource).into(mCategoryImage);
     }
   }
